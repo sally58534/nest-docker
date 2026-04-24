@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: nestuser
+      POSTGRES_PASSWORD: nestpass
+      POSTGRES_DB: nestdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nestuser -d nestdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: ./nestjs-app
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: nestuser
+      DB_PASS: nestpass
+      DB_NAME: nestdb
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
