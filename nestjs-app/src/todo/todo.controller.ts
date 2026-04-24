@@ -10,7 +10,7 @@ export class TodoController {
   create(@Body() dto: CreateTodoDto) {
     console.log("Adding new todo with description:", dto.description);
     console.debug("Received CreateTodoDto:", dto);
-    console.error("This is a test error log for debugging purposes.");
+    console.error("Ciao bubiiiii");
     return this.todoService.create(dto);
   }
 }
